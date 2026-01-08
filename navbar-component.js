@@ -6,14 +6,12 @@ template.innerHTML = `
       class="navbar-toggler"
       type="button"
       data-toggle="collapse"
-      data-target="#navbarsExampleDefault"
-      aria-controls="navbarsExampleDefault"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
@@ -29,9 +27,20 @@ template.innerHTML = `
   </nav>
 `;
 
+let instanceCount = 0;
+
 class SiteNavbar extends HTMLElement {
   connectedCallback() {
     this.appendChild(template.content.cloneNode(true));
+
+    const uniqueId = `site-navbar-${++instanceCount}`;
+    const toggler = this.querySelector('.navbar-toggler');
+    const collapse = this.querySelector('.navbar-collapse');
+
+    collapse.id = uniqueId;
+    toggler.setAttribute('data-target', `#${uniqueId}`);
+    toggler.setAttribute('aria-controls', uniqueId);
+
     this.setActiveLink();
   }
 
